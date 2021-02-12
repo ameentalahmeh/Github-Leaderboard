@@ -23,6 +23,7 @@
   "homepage": "https://github.com/ameentalahmeh/Github-Leaderborad#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "env2": "^2.2.2",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
