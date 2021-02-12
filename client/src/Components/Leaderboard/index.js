@@ -1,6 +1,6 @@
 import React from "react";
 import { ListGroup } from 'react-bootstrap';
-
+import "./Leaderboard.css";
 
 
 const Leaderboard = (props) => {
@@ -8,20 +8,23 @@ const Leaderboard = (props) => {
     let { items } = props;
 
     return (
-        <ListGroup style={{ width: "90%" }}>
+        <ListGroup>
             {
                 items && items.map((item, idx) => {
                     return (
-                        <ListGroup.Item
-                            key={idx}
-                        >
+                        <ListGroup.Item key={idx}>
                             <h6>{(idx + 1) + "."}</h6>
-                            <img src={item.avatorUrl} alt={item.login + " avator"} />
+                            <img src={item.url + ".png"} alt={item.login + " avator"} />
                             <h6>{item.name ? item.name : item.login}</h6>
                             <div className="UpdatesContainer">
-                                <p className="additions">{item.additions + " additions"}</p>
-                                <p className="" color="red">{item.deletions + " deletions"}</p>
-                                <p className = "" color="black">{item.updates + " updates"}</p>
+                                <p>
+                                    <span className="additions">{item.additions + " additions"}</span>
+                                    <span> + </span>
+                                    <span className="deletions">{item.deletions + " deletions"}</span>
+                                </p>
+                                <p className="updates">
+                                    = {item.updates + " updates"}
+                                </p>
 
                             </div>
                         </ListGroup.Item>

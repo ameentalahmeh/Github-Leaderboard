@@ -1,17 +1,17 @@
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const router = require('./router');
-require('env2')('config.env');
 
 // Create Express Application
 const app = express();
 
+// Server Port
+const port = 8080;
+
 // Activate cors // Parsing body // Access Static Files // Routing 
 app.use(cors());
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
-app.use(bodyParser.json());
 app.use(router);
 
 // Home endpoint  
@@ -20,6 +20,6 @@ app.get('/', (_req, res) => {
 });
 
 // Set Server Port
-app.set('port', process.env.PORT || 3002);
+app.set('port', port || 3002);
 
 module.exports = app;

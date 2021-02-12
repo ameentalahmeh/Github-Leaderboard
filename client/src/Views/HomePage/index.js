@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from "react";
 import axios from "axios";
 import { Navbar } from 'react-responsive-navbar-overlay';
+import { MarkGithubIcon } from "@primer/octicons-react";
 import { CircularProgress } from '@material-ui/core';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -13,7 +14,7 @@ import './HomePage.css';
 const MainView = () => {
 
     // States
-    let [repoUrl, setRepoUrl] = useState(null);
+    const [repoUrl, setRepoUrl] = useState(null);
 
     const [accessToken, setAccessToken] = useState(null);
     const [isTokenSetted, setIsTokenSetted] = useState(null);
@@ -27,11 +28,16 @@ const MainView = () => {
 
     // Functions
 
+    const resetStates = () => {
+        setRequestError(null);
+        setIsleaderboardFetching(true);
+        setleaderboard(null);
+    }
+
     const getLeaderbroad = (event) => {
 
         event.preventDefault()
-        setRequestError(null);
-        setIsleaderboardFetching(true);
+        resetStates();
 
         // Check if token exist 
         if (!localStorage.getItem("Token")) {
@@ -84,10 +90,12 @@ const MainView = () => {
                                 :
                                 null
                         }
+                        <MarkGithubIcon className="GithubIcon" size={50} />
                         <Navbar
                             brand="Leaderboard"
                             links={[]}
-                            backgroundColor="#2196f3" />
+                            backgroundColor="#2196f3"
+                        />
 
                         <Template
                             onSubmitFun={getLeaderbroad}
@@ -99,7 +107,7 @@ const MainView = () => {
 
                         {
                             requestError ?
-                                <h5 color="red">{requestError}</h5>
+                                <h5>{requestError}</h5>
                                 :
                                 null
                         }

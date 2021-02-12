@@ -49,7 +49,17 @@ module.exports = async (req, res) => {
 
     } catch (error) {
         let err = error.message;
-        let errMsg = String(err).indexOf("{") != -1 ? JSON.parse(err.slice(String(err).indexOf("{"))).response.message : err;
+        let response = String(err).indexOf("{") != -1 ? JSON.parse(err.slice(String(err).indexOf("{"))).response : err;
+        let errMsg = response ?
+            response.message ?
+                response.message
+                :
+                response.errors && response.errors.length > 0 ?
+                    response.errors[0].message
+                    :
+                    err
+            :
+            null
 
         // Error catch and send to client.
         res.json({

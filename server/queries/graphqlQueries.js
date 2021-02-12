@@ -28,7 +28,7 @@ module.exports = (accessToken) => {
                                 id
                                 login
                                 name
-                                avatarUrl
+                                url
                             }
                         }
                     }

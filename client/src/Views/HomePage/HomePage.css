@@ -1,6 +1,31 @@
+nav {
+    padding: 1em 0;
+}
+
 .nav-brand {
     font-family: cursive;
     font-size: x-large;
+}
+
+.nav-hamburguer-icon {
+    display: none;
+}
+
+.GithubIcon {
+    color: white;
+    float: left;
+    width: 50px;
+    margin: 10px;
+}
+
+.btn-outline-primary {
+    color: #2196f3;
+    border-color: #2196f3;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:not(:disabled):not(.disabled):active {
+    background-color: #2196f3 !important;
+    border-color: #2196f3 !important;
 }
 
 h5 {
