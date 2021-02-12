@@ -25,7 +25,8 @@
     "env2": "^2.2.2",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
-    "graphql-request": "^3.4.0"
+    "graphql-request": "^3.4.0",
+    "parse-github-url": "^1.0.2"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

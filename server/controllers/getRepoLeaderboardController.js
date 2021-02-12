@@ -1,20 +1,44 @@
-const createRepoLeaderboard = (repo_url) => {
-    return repo_url
+const ghUrlParser = require('parse-github-url');
+const graphqlQueries = require('../queries/graphqlQueries');
+
+// Create Repo Leaderboard Function
+const createRepoLeaderboard = async (repoUrl, accessToken) => {
+
+    let repoCollaboratorsUpdates = [];
+
+    // Extract Repo Owner & Name.
+    let { owner, name } = ghUrlParser(repoUrl);
+
+    // Graphql Queries
+    const { getRepoCollaboratorsQuery, getCollaboratorsUpdatesQuery } = graphqlQueries(accessToken)
+
+    // Get Repo Collaborators
+    let collaborators = await getRepoCollaboratorsQuery(owner, name)
+
+    // Get Collaborators Updates
+    await Promise.all(collaborators.map(async (collaborator) => {
+        let collaboratorUpdates = await getCollaboratorsUpdatesQuery(owner, name, collaborator.id)
+        collaborator['additions'] = collaboratorUpdates.length > 0 ? collaboratorUpdates.map(update => update.additions).reduce((prev, next) => prev + next) : 0
+        collaborator['deletions'] = collaboratorUpdates.length > 0 ? collaboratorUpdates.map(update => update.deletions).reduce((prev, next) => prev + next) : 0
+        repoCollaboratorsUpdates.push(collaborator);
+    }));
+
+    return repoCollaboratorsUpdates;
 }
 
 module.exports = async (req, res) => {
     try {
 
         // Extract Repo URL from request query parameters.
-        let { repo_url } = req.query;
+        let { repoUrl, accessToken } = req.query;
 
         // Create Leaderboard
-        let repo_leaderboard = await createRepoLeaderboard(repo_url);
+        let repoLeaderboard = await createRepoLeaderboard(repoUrl, accessToken);
 
         // Create and send the response
         res.json({
             success: true,
-            leaderboard: repo_leaderboard
+            leaderboard: repoLeaderboard
         })
     } catch (error) {
 
