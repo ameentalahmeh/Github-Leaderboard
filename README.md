@@ -11,7 +11,7 @@
  - Desgin **Bootstrap**.
    
 
-## To use the website
+## Website user properties
 1. You need to have a github account
 2. You must be owner or one of Github repository collaborators.
 3. [Create Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
