@@ -3,11 +3,12 @@ import { Form, FormControl, Button } from 'react-bootstrap';
 import './Template.css';
 
 const Template = (props) => {
-    let { onSubmitFun, id, placeholder, onChangeFun, btnLabel } = props;
+    let { onSubmitFun, id, placeholder, onChangeFun, btnLabel, formtext } = props;
 
     return (
         <Form onSubmit={(e) => onSubmitFun(e)}>
             <Form.Group className="InputField">
+                <p>{formtext}</p>
                 <FormControl
                     id={id}
                     placeholder={placeholder}

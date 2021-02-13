@@ -4,23 +4,22 @@ import { Navbar } from 'react-responsive-navbar-overlay';
 import { MarkGithubIcon } from "@primer/octicons-react";
 import { CircularProgress } from '@material-ui/core';
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 
 import Template from "../../Components/Template";
 import Leaderboard from "../../Components/Leaderboard";
 
+import 'reactjs-popup/dist/index.css';
 import './HomePage.css';
 
 const MainView = () => {
 
     // States
     const [repoUrl, setRepoUrl] = useState(null);
-
     const [accessToken, setAccessToken] = useState(null);
-    const [isTokenSetted, setIsTokenSetted] = useState(null);
+    const [leaderboard, setLeaderboard] = useState(null);
 
-    const [leaderboard, setleaderboard] = useState(null);
-    const [isLeaderboardFetching, setIsleaderboardFetching] = useState(null);
+    const [openModel, setOpenModel] = useState(false);
+    const [isLeaderboardFetching, setIsleaderboardFetching] = useState(false);
 
     const [requestError, setRequestError] = useState(null);
     const [serverError, setServerError] = useState(null);
@@ -28,29 +27,22 @@ const MainView = () => {
 
     // Functions
 
-    const resetStates = () => {
+    const updateStates = () => {
+        setIsleaderboardFetching(!!localStorage.getItem("Token"));
         setRequestError(null);
-        setIsleaderboardFetching(true);
-        setleaderboard(null);
+        setLeaderboard(null);
     }
 
     const getLeaderbroad = (event) => {
-
-        event.preventDefault()
-        resetStates();
-
-        // Check if token exist 
-        if (!localStorage.getItem("Token")) {
-            setIsTokenSetted(false)
-
-            // Send The request 
-        } else {
+        event.preventDefault();
+        updateStates();
+        if (localStorage.getItem("Token")) {
             axios
-                .get(`/api/github-leaderboard/?repoUrl=${repoUrl}&accessToken=${accessToken}`)
+                .get(`/api/github-leaderboard/?repoUrl=${repoUrl}&accessToken=${localStorage.getItem("Token")}`)
                 .then(({ data }) => {
                     setIsleaderboardFetching(false)
                     if (data.success) {
-                        setleaderboard(data.leaderboard)
+                        setLeaderboard(data.leaderboard)
                     } else {
                         setRequestError(data.error)
                     }
@@ -58,13 +50,16 @@ const MainView = () => {
                 .catch((err) => {
                     setServerError(err.message)
                 })
+        } else {
+            setOpenModel(true);
         }
     }
 
     const saveToken = (event) => {
         event.preventDefault();
-        localStorage.setItem("Token", accessToken)
-        setIsTokenSetted(true);
+        updateStates();
+        setOpenModel(false);
+        localStorage.setItem("Token", accessToken);
     }
 
     return (
@@ -76,20 +71,6 @@ const MainView = () => {
                     </h1>
                     :
                     <div>
-                        {
-                            !isTokenSetted ?
-                                <Popup open={true} closeOnDocumentClick={false} position="right center">
-                                    <Template
-                                        onSubmitFun={saveToken}
-                                        id="accessTokenInput"
-                                        placeholder="Enter your github access token"
-                                        onChangeFun={setAccessToken}
-                                        btnLabel="Save Token"
-                                    />
-                                </Popup>
-                                :
-                                null
-                        }
                         <MarkGithubIcon className="GithubIcon" size={50} />
                         <Navbar
                             brand="Leaderboard"
@@ -113,13 +94,25 @@ const MainView = () => {
                         }
 
                         {
-                            isLeaderboardFetching ?
-                                <CircularProgress />
+                            openModel ?
+                                <Popup open={true} onClose={() => setOpenModel(false)} position="top center">
+                                    <Template
+                                        onSubmitFun={saveToken}
+                                        id="accessTokenInput"
+                                        placeholder="Enter your github access token"
+                                        onChangeFun={setAccessToken}
+                                        btnLabel="Save Token"
+                                        formtext={["You need the Access Token if don't have, create ", <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">one</a>]}
+                                    />
+                                </Popup>
                                 :
-                                leaderboard ?
-                                    <Leaderboard items={leaderboard} />
+                                isLeaderboardFetching && !leaderboard ?
+                                    <CircularProgress />
                                     :
-                                    null
+                                    leaderboard ?
+                                        <Leaderboard items={leaderboard} />
+                                        :
+                                        null
                         }
 
                     </div>
