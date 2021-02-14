@@ -33,6 +33,13 @@ module.exports = async (req, res) => {
         // Extract Repo URL from request query parameters.
         let { repoUrl, accessToken } = req.query;
 
+        // Github Repo Regex
+        let grRegex =  RegExp("(?:git@|https://)github.com[/:](.*)");
+
+        // Check if the given url is Github Repo URL.
+        if(!grRegex.test(repoUrl)) {
+            throw new Error("Invalid Github repository link")
+        }
         // Check if repo exist or not
         if (!repoUrl || !repoUrl.trim().length) {
             throw new Error("You must enter a github repo link!")
