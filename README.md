@@ -8,7 +8,7 @@
  - Front-End **(ReactJs)**.
  - Back-End **(NodeJs/Express)**.
  - API **(GraphQL API)**.
- - Desgin **Bootstrap**.
+ - Desgin **(Bootstrap)**.
    
 
 ## Website user properties
