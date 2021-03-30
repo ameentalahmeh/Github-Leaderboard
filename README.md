@@ -1,8 +1,8 @@
 ## Description
-**Github Leaderborad:** A web application that produces a leaderboard for a Github repository, which contains collaborators' basic information, total added/deleted lines of code, and a sum of all changes (being actual score) for each collaborator.
+**Github Leaderboard:** A web application that produces a leaderboard for a Github repository, which contains collaborators' basic information, total added/deleted lines of code, and a sum of all changes (being actual score) for each collaborator.
 
 ## Website
-# [Github Leaderborad](https://github-learderboard.herokuapp.com/)
+# [Github Leaderboard](https://github-learderboard.herokuapp.com/)
 
 ## Technolgies
  - Front-End **(ReactJs)**.
